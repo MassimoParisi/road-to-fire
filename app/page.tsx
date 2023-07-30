@@ -18,6 +18,11 @@ export default function Home() {
   const [phases, setPhases] = useState([{ amount: 500, years: 30 }]);
   const [ter, setTer] = useState("0.22");
   const [monthlyGoal, setMonthlyGoal] = useState("1500");
+  const [swr, setSwr] = useState("3");
+
+  const fuMoney = Math.round(
+    parseFloat(monthlyGoal) * 12 * (100 / parseFloat(swr))
+  );
 
   const [errors, setErrors] = useState({
     initialValue: false,
@@ -26,7 +31,14 @@ export default function Home() {
     monthlyGoal: false,
   });
 
-  const [data, setData] = useState<Snapshot[]>([]);
+  const [data, setData] = useState<Snapshot[]>(
+    fire({
+      initialValue: parseFloat(initialValue),
+      interest: parseFloat(interest),
+      ter: parseFloat(ter),
+      fuMoney: fuMoney,
+    })
+  );
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 p-24">
@@ -152,7 +164,7 @@ export default function Home() {
                 initialValue: parseFloat(initialValue),
                 interest: parseFloat(interest),
                 ter: parseFloat(ter),
-                monthlyGoal: parseFloat(monthlyGoal),
+                fuMoney: fuMoney,
               })
             );
           }}
@@ -171,7 +183,7 @@ export default function Home() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="visual">
-            <SavingsChart snapshots={data} />
+            <SavingsChart snapshots={data} fuMoney={fuMoney} />
           </TabsContent>
           <TabsContent value="table">
             <SavingsTable snapshots={data} />
