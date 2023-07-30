@@ -24,6 +24,7 @@ import {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
+import { Separator } from "./ui/separator";
 
 export default function SavingsTable({
   snapshots,
@@ -101,22 +102,23 @@ const CustomTooltip = ({
   label,
 }: TooltipProps<ValueType, NameType>) => {
   if (active) {
+    const principal = payload?.[0].value as number;
+    const net_worth = payload?.[1].value as number;
+    const interest = ((net_worth * 100) / principal - 100).toFixed(1);
     return (
       <div className="bg-secondary p-2 rounded">
-        <h3 className="label font-bold">{`${
-          new Date().getFullYear() + label
-        }`}</h3>
+        <div className="flex gap-3 justify-between">
+          <h3 className="font-bold">{`${new Date().getFullYear() + label}`}</h3>
+          <p className="font-black text-green-500">+{interest}%</p>
+        </div>
+        <Separator className="my-0.5 h-px bg-background/50" />
         <p className="flex gap-1 justify-between">
           <span>Principal:</span>
-          <span>
-            {Intl.NumberFormat().format(payload?.[0].value as number)} €
-          </span>
+          <span>{Intl.NumberFormat().format(principal)} €</span>
         </p>
         <p className="flex gap-3 justify-between">
           <span>Net Worth:</span>
-          <span>
-            {Intl.NumberFormat().format(payload?.[1].value as number)} €
-          </span>
+          <span>{Intl.NumberFormat().format(net_worth)} €</span>
         </p>
       </div>
     );

@@ -1,6 +1,6 @@
 "use client";
 
-import { PhaseCard } from "@/components/phase-card";
+import { Phase, PhaseCard } from "@/components/phase-card";
 import SavingsChart from "@/components/savings-chart";
 import { SavingsTable } from "@/components/savings-table";
 import { Button } from "@/components/ui/button";
@@ -15,10 +15,12 @@ import { useState } from "react";
 export default function Home() {
   const [initialValue, setInitialValue] = useState<string>("0");
   const [interest, setInterest] = useState("4.5");
-  const [phases, setPhases] = useState([{ amount: 500, years: 30 }]);
+  const [phases, setPhases] = useState<Phase[]>([{ amount: 500, years: 30 }]);
   const [ter, setTer] = useState("0.22");
   const [monthlyGoal, setMonthlyGoal] = useState("1500");
   const [swr, setSwr] = useState("3");
+
+  console.log(phases);
 
   const fuMoney = Math.round(
     parseFloat(monthlyGoal) * 12 * (100 / parseFloat(swr))
@@ -37,8 +39,15 @@ export default function Home() {
       interest: parseFloat(interest),
       ter: parseFloat(ter),
       fuMoney: fuMoney,
+      phases: phases,
     })
   );
+
+  const handlePhaseChange = (index: number, updatedPhase: Phase) => {
+    const updatedPhases = [...phases];
+    updatedPhases[index] = updatedPhase;
+    setPhases(updatedPhases);
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 p-24">
@@ -128,11 +137,17 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* <ScrollArea className="border bg-background p-5 rounded-xl">
+        <ScrollArea className="border bg-background p-5 rounded-xl flex">
           <div className="flex gap-3 items-center py-5">
-            <div className="px-5">
+            <div className="px-5 gap-3 flex">
               {phases.map((phase, i) => (
-                <PhaseCard key={i} {...phase} />
+                <PhaseCard
+                  key={i}
+                  {...phase}
+                  onChange={(updatedPhase: Phase) =>
+                    handlePhaseChange(i, updatedPhase)
+                  }
+                />
               ))}
             </div>
             <Button
@@ -144,10 +159,10 @@ export default function Home() {
               Add
             </Button>
           </div>
-          <ScrollBar orientation="horizontal" asChild>
+          {/* <ScrollBar orientation="horizontal" asChild>
             <ScrollAreaThumb asChild>X</ScrollAreaThumb>
-          </ScrollBar>
-        </ScrollArea> */}
+          </ScrollBar> */}
+        </ScrollArea>
         <Button
           className="px-6 py-3 rounded-xl bg-green-700 hover:bg-green-800 text-white"
           onClick={() => {
@@ -165,6 +180,7 @@ export default function Home() {
                 interest: parseFloat(interest),
                 ter: parseFloat(ter),
                 fuMoney: fuMoney,
+                phases: phases,
               })
             );
           }}

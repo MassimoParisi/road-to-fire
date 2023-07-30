@@ -1,3 +1,5 @@
+import { Phase } from "@/components/phase-card";
+
 export interface Snapshot {
   net_worth: number;
   principal: number;
@@ -10,11 +12,13 @@ export function fire({
   interest,
   fuMoney,
   ter,
+  phases,
 }: {
   initialValue: number;
   interest: number;
   fuMoney: number;
   ter: number;
+  phases: Phase[];
 }) {
   const yearlyInterestRate = (interest - ter) / 100;
   const monthlyInterestRate = yearlyInterestRate / 12;
@@ -22,10 +26,10 @@ export function fire({
 
   console.log("we want to reach FU = ", fuMoney);
 
-  const phases = [
-    [1000, 5],
-    [2000, 15],
-  ];
+  // const phases = [
+  //   [1000, 5],
+  //   [2000, 15],
+  // ];
 
   let net_worth = initialNetWorth;
   let principal = initialNetWorth;
@@ -39,8 +43,8 @@ export function fire({
     },
   ];
   for (const phase of phases) {
-    const [amount, time] = phase;
-    for (let i = 0; i < time; i++) {
+    const { amount, years } = phase;
+    for (let i = 0; i < years; i++) {
       for (let j = 0; j < 12; j++) {
         net_worth = (net_worth + amount) * (1 + monthlyInterestRate);
         principal += amount;
