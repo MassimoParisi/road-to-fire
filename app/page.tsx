@@ -63,7 +63,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 p-24">
-      <h1 className="text-5xl">Road To F.I.R.E.</h1>
+      <h1 className="text-5xl">Road To F.I.R.E. 🔥</h1>
       <div className="bg-secondary w-full p-5 rounded-xl flex flex-col justify-between gap-5">
         <div className="flex gap-10">
           <div className="flex w-full gap-5 whitespace-nowrap justify-center">
