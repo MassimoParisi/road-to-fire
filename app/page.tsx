@@ -4,12 +4,19 @@ import { Phase, PhaseCard } from "@/components/phase-card";
 import SavingsChart from "@/components/savings-chart";
 import { SavingsTable } from "@/components/savings-table";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Snapshot, fire } from "@/lib/fire";
-import { ScrollAreaThumb } from "@radix-ui/react-scroll-area";
 import { useState } from "react";
 
 export default function Home() {
@@ -20,7 +27,7 @@ export default function Home() {
   const [monthlyGoal, setMonthlyGoal] = useState("1500");
   const [swr, setSwr] = useState("3");
 
-  console.log(phases);
+  // console.log(phases);
 
   const fuMoney = Math.round(
     parseFloat(monthlyGoal) * 12 * (100 / parseFloat(swr))
@@ -31,6 +38,7 @@ export default function Home() {
     interest: false,
     ter: false,
     monthlyGoal: false,
+    swr: false,
   });
 
   const [data, setData] = useState<Snapshot[]>(
@@ -43,6 +51,10 @@ export default function Home() {
     })
   );
 
+  const finalPrincipal = data[data.length - 1].principal;
+  const finalNetWorth = data[data.length - 1].net_worth;
+  const finalFuRatio = (finalNetWorth * 100) / fuMoney;
+
   const handlePhaseChange = (index: number, updatedPhase: Phase) => {
     const updatedPhases = [...phases];
     updatedPhases[index] = updatedPhase;
@@ -54,8 +66,8 @@ export default function Home() {
       <h1 className="text-5xl">Road To F.I.R.E.</h1>
       <div className="bg-secondary w-full p-5 rounded-xl flex flex-col justify-between gap-5">
         <div className="flex gap-10">
-          <div className="flex flex-col w-full gap-5 whitespace-nowrap justify-center">
-            <div className="flex flex-col gap-1.5">
+          <div className="flex w-full gap-5 whitespace-nowrap justify-center">
+            <div className="flex w-full flex-col gap-1.5">
               <Label htmlFor="initial-nw">Initial Investment (EUR)</Label>
               <Input
                 type="text"
@@ -75,7 +87,7 @@ export default function Home() {
                 }}
               />
             </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex w-full flex-col gap-1.5">
               <Label htmlFor="annual return">Annual return (%)</Label>
               <Input
                 type="text"
@@ -95,9 +107,7 @@ export default function Home() {
                 }}
               />
             </div>
-          </div>
-          <div className="flex flex-col w-full gap-5 whitespace-nowrap justify-center">
-            <div className="flex flex-col gap-1.5">
+            <div className="flex w-full flex-col gap-1.5">
               <Label htmlFor="initial-nw">TER (%)</Label>
               <Input
                 type="text"
@@ -115,7 +125,7 @@ export default function Home() {
                 }}
               />
             </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex w-full flex-col gap-1.5">
               <Label htmlFor="initial-nw">Monthly Goal (EUR)</Label>
               <Input
                 type="text"
@@ -135,7 +145,28 @@ export default function Home() {
                 }}
               />
             </div>
+            <div className="flex w-full flex-col gap-1.5">
+              <Label htmlFor="initial-nw">SWR (%)</Label>
+              <Input
+                type="text"
+                id="swr"
+                placeholder="3"
+                className={`rounded ${errors.swr && "border border-red-500"}`}
+                value={swr}
+                onChange={(e) => {
+                  setSwr(e.target.value);
+                  if (isFloat(e.target.value)) {
+                    setErrors({ ...errors, swr: false });
+                  } else {
+                    setErrors({ ...errors, swr: true });
+                  }
+                }}
+              />
+            </div>
           </div>
+          {/* <div className="flex w-full gap-5 whitespace-nowrap justify-center">
+            
+          </div> */}
         </div>
         <ScrollArea className="border bg-background p-5 rounded-xl flex">
           <div className="flex gap-3 items-center py-5">
@@ -199,9 +230,49 @@ export default function Home() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="visual">
-            <SavingsChart snapshots={data} fuMoney={fuMoney} />
+            <div className="flex flex-col gap-3 pt-10">
+              <div className="flex gap-3 px-40">
+                <Card className="grow">
+                  <CardHeader>
+                    <CardDescription>Principal</CardDescription>
+                    <CardTitle>
+                      {Intl.NumberFormat().format(finalPrincipal)} €
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+                <Card className="grow">
+                  <CardHeader>
+                    <CardDescription>Net Worth</CardDescription>
+                    <CardTitle
+                      className={`${
+                        finalFuRatio < 30
+                          ? "text-green-300"
+                          : finalFuRatio < 60
+                          ? "text-green-400"
+                          : "text-green-500"
+                      }`}
+                    >
+                      {Intl.NumberFormat().format(finalNetWorth)} €
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+                <Card className="grow">
+                  <CardHeader>
+                    <CardDescription>Fuck You Ratio</CardDescription>
+                    <CardTitle
+                      className={`${
+                        finalFuRatio > 100 ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {finalFuRatio.toFixed(1)} %
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+              </div>
+              <SavingsChart snapshots={data} fuMoney={fuMoney} />
+            </div>
           </TabsContent>
-          <TabsContent value="table">
+          <TabsContent value="table" className="pt-10">
             <SavingsTable snapshots={data} />
           </TabsContent>
         </Tabs>

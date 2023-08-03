@@ -24,7 +24,7 @@ export function fire({
   const monthlyInterestRate = yearlyInterestRate / 12;
   const initialNetWorth = initialValue;
 
-  console.log("we want to reach FU = ", fuMoney);
+  // console.log("we want to reach FU = ", fuMoney);
 
   // const phases = [
   //   [1000, 5],
