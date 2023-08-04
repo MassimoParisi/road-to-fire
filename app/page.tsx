@@ -6,28 +6,23 @@ import { SavingsTable } from "@/components/savings-table";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Snapshot, fire } from "@/lib/fire";
 import { useState } from "react";
 
 export default function Home() {
-  const [initialValue, setInitialValue] = useState<string>("0");
+  const [initialValue, setInitialValue] = useState("0");
   const [interest, setInterest] = useState("4.5");
   const [phases, setPhases] = useState<Phase[]>([{ amount: 500, years: 30 }]);
   const [ter, setTer] = useState("0.22");
   const [monthlyGoal, setMonthlyGoal] = useState("1500");
   const [swr, setSwr] = useState("3");
-
-  // console.log(phases);
 
   const fuMoney = Math.round(
     parseFloat(monthlyGoal) * 12 * (100 / parseFloat(swr))
@@ -164,23 +159,19 @@ export default function Home() {
               />
             </div>
           </div>
-          {/* <div className="flex w-full gap-5 whitespace-nowrap justify-center">
-            
-          </div> */}
         </div>
-        <ScrollArea className="border bg-background p-5 rounded-xl flex">
-          <div className="flex gap-3 items-center py-5">
-            <div className="px-5 gap-3 flex">
-              {phases.map((phase, i) => (
-                <PhaseCard
-                  key={i}
-                  {...phase}
-                  onChange={(updatedPhase: Phase) =>
-                    handlePhaseChange(i, updatedPhase)
-                  }
-                />
-              ))}
-            </div>
+        <div className="relative border border-background bg-background rounded-xl">
+          <div className="flex gap-3 items-center scrollbar-hide overflow-x-scroll px-6 py-5">
+            {phases.map((phase, i) => (
+              <PhaseCard
+                key={i}
+                {...phase}
+                onChange={(updatedPhase: Phase) =>
+                  handlePhaseChange(i, updatedPhase)
+                }
+              />
+            ))}
+
             <Button
               className="h-16 w-16 text-md rounded-xl font-semibold"
               onClick={() => {
@@ -190,10 +181,9 @@ export default function Home() {
               Add
             </Button>
           </div>
-          {/* <ScrollBar orientation="horizontal" asChild>
-            <ScrollAreaThumb asChild>X</ScrollAreaThumb>
-          </ScrollBar> */}
-        </ScrollArea>
+          <div className="absolute left-0 top-0 rounded-xl h-full w-16 bg-gradient-to-r from-background to-transparent" />
+          <div className="absolute right-0 top-0 rounded-xl h-full w-16 bg-gradient-to-l from-background to-transparent" />
+        </div>
         <Button
           className="px-6 py-3 rounded-xl bg-green-700 hover:bg-green-800 text-white"
           onClick={() => {
