@@ -7,17 +7,10 @@ import { Phase, PhaseCard } from "@/components/phase-card";
 import SavingsChart from "@/components/savings-chart";
 import { SavingsTable } from "@/components/savings-table";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Snapshot, fire } from "@/lib/fire";
-import { BarChart4, Goal, PiggyBank } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
@@ -58,6 +51,12 @@ export default function Home() {
     const updatedPhases = [...phases];
     updatedPhases[index] = updatedPhase;
     setPhases(updatedPhases);
+  };
+
+  const handlePhaseDelete = (index: number) => {
+    if (phases.length > 1) {
+      setPhases(phases.slice(0, index).concat(phases.slice(index + 1)));
+    }
   };
 
   return (
@@ -170,9 +169,11 @@ export default function Home() {
               <PhaseCard
                 key={i}
                 {...phase}
+                onlyOne={phases.length == 1}
                 onChange={(updatedPhase: Phase) =>
                   handlePhaseChange(i, updatedPhase)
                 }
+                onDelete={() => handlePhaseDelete(i)}
               />
             ))}
 
