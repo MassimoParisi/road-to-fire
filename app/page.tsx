@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Snapshot, fire } from "@/lib/fire";
+import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
@@ -177,14 +178,13 @@ export default function Home() {
               />
             ))}
 
-            <Button
-              className="h-16 w-16 text-md rounded-xl font-semibold"
+            <button
               onClick={() => {
                 setPhases([...phases, { amount: 500, years: 10 }]);
               }}
             >
-              Add
-            </Button>
+              <PlusCircle className="bg-white stroke-background w-12 h-12 p-0.5 rounded-full" />
+            </button>
           </div>
           <div className="absolute left-0 top-0 rounded-xl h-full w-16 bg-gradient-to-r from-background to-transparent" />
           <div className="absolute right-0 top-0 rounded-xl h-full w-16 bg-gradient-to-l from-background to-transparent" />
