@@ -1,5 +1,8 @@
 "use client";
 
+import { FuckYouRatioCard } from "@/components/cards/fu-ratio-card";
+import { NetWorthCard } from "@/components/cards/net-worth-card";
+import { PrincipalCard } from "@/components/cards/principal-card";
 import { Phase, PhaseCard } from "@/components/phase-card";
 import SavingsChart from "@/components/savings-chart";
 import { SavingsTable } from "@/components/savings-table";
@@ -14,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Snapshot, fire } from "@/lib/fire";
+import { BarChart4, Goal, PiggyBank } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
@@ -221,43 +225,10 @@ export default function Home() {
           </TabsList>
           <TabsContent value="visual">
             <div className="flex flex-col gap-3 pt-10">
-              <div className="flex gap-3 px-40">
-                <Card className="grow">
-                  <CardHeader>
-                    <CardDescription>Principal</CardDescription>
-                    <CardTitle>
-                      {Intl.NumberFormat().format(finalPrincipal)} €
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-                <Card className="grow">
-                  <CardHeader>
-                    <CardDescription>Net Worth</CardDescription>
-                    <CardTitle
-                      className={`${
-                        finalFuRatio < 30
-                          ? "text-green-300"
-                          : finalFuRatio < 60
-                          ? "text-green-400"
-                          : "text-green-500"
-                      }`}
-                    >
-                      {Intl.NumberFormat().format(finalNetWorth)} €
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-                <Card className="grow">
-                  <CardHeader>
-                    <CardDescription>Fuck You Ratio</CardDescription>
-                    <CardTitle
-                      className={`${
-                        finalFuRatio > 100 ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      {finalFuRatio.toFixed(1)} %
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
+              <div className="flex flex-wrap gap-3 px-10 justify-center">
+                <PrincipalCard principal={finalPrincipal} />
+                <NetWorthCard netWorth={finalNetWorth} fuRatio={finalFuRatio} />
+                <FuckYouRatioCard fuRatio={finalFuRatio} />
               </div>
               <SavingsChart snapshots={data} fuMoney={fuMoney} />
             </div>
