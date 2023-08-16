@@ -24,13 +24,6 @@ export function fire({
   const monthlyInterestRate = yearlyInterestRate / 12;
   const initialNetWorth = initialValue;
 
-  // console.log("we want to reach FU = ", fuMoney);
-
-  // const phases = [
-  //   [1000, 5],
-  //   [2000, 15],
-  // ];
-
   let net_worth = initialNetWorth;
   let principal = initialNetWorth;
   let year = 1;
@@ -60,4 +53,17 @@ export function fire({
     }
   }
   return data;
+}
+
+export function formatMoney(money: number) {
+  if (money >= 1000000000) {
+    return `${(money / 1000000000).toFixed(1)}B €`;
+  }
+  if (money >= 1000000) {
+    return `${(money / 1000000).toFixed(1)}M €`;
+  }
+  if (money >= 1000) {
+    return `${(money / 1000).toFixed(0)}k €`;
+  }
+  return `${money.toFixed(0)} €`;
 }

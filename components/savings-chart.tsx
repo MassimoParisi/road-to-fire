@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from "react";
 
 // import ExampleControls from "./ExampleControls";
 // import CustomChartBackground from "./CustomChartBackground";
-import { Snapshot } from "@/lib/fire";
+import { Snapshot, formatMoney } from "@/lib/fire";
 
 import { format, parseISO } from "date-fns";
 import {
@@ -36,8 +36,6 @@ export default function SavingsTable({
   return (
     <ResponsiveContainer width="100%" height={500}>
       <AreaChart
-        // width={500}
-        // height={250}
         data={snapshots}
         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
       >
@@ -65,13 +63,7 @@ export default function SavingsTable({
           tickLine={false}
           tickCount={8}
           tickFormatter={(money: number) => {
-            if (money >= 1000000) {
-              return `€ ${(money / 1000000).toFixed(1)}M`;
-            }
-            if (money >= 1000) {
-              return `€ ${(money / 1000).toFixed(0)}k`;
-            }
-            return `€ ${money.toFixed(0)}`;
+            return formatMoney(money);
           }}
         />
         <CartesianGrid strokeOpacity={0.2} />
@@ -104,7 +96,8 @@ const CustomTooltip = ({
   if (active) {
     const principal = payload?.[0].value as number;
     const net_worth = payload?.[1].value as number;
-    const interest = ((net_worth * 100) / principal - 100).toFixed(1);
+    const interest =
+      principal == 0 ? "0.0" : ((net_worth * 100) / principal - 100).toFixed(1);
     return (
       <div className="bg-secondary p-2 rounded">
         <div className="flex gap-3 justify-between">
@@ -126,7 +119,3 @@ const CustomTooltip = ({
 
   return null;
 };
-
-function formatToCurrency(amount: number) {
-  return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-}
