@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Snapshot, fire } from "@/lib/fire";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
+import Balancer from "react-wrap-balancer";
 
 export default function Home() {
   const [initialValue, setInitialValue] = useState("0");
@@ -61,12 +62,14 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-10 p-24">
-      <h1 className="text-5xl">Road To F.I.R.E. 🔥</h1>
+    <main className="flex min-h-screen flex-col items-center gap-10 p-3 md:p-24">
+      <Balancer className="sm:text-5xl text-4xl text-center">
+        Road To F.I.R.E. 🔥
+      </Balancer>
       <div className="bg-secondary w-full p-5 rounded-xl flex flex-col justify-between gap-5">
         <div className="flex gap-10">
-          <div className="flex w-full gap-5 whitespace-nowrap justify-center">
-            <div className="flex w-full flex-col gap-1.5">
+          <div className="flex flex-wrap w-full gap-5 whitespace-nowrap justify-center">
+            <div className="flex grow flex-col gap-1.5">
               <Label htmlFor="initial-nw">Initial Investment (EUR)</Label>
               <Input
                 type="text"
@@ -86,7 +89,7 @@ export default function Home() {
                 }}
               />
             </div>
-            <div className="flex w-full flex-col gap-1.5">
+            <div className="flex grow flex-col gap-1.5">
               <Label htmlFor="annual return">Annual return (%)</Label>
               <Input
                 type="text"
@@ -106,7 +109,7 @@ export default function Home() {
                 }}
               />
             </div>
-            <div className="flex w-full flex-col gap-1.5">
+            <div className="flex grow flex-col gap-1.5">
               <Label htmlFor="initial-nw">TER (%)</Label>
               <Input
                 type="text"
@@ -124,7 +127,7 @@ export default function Home() {
                 }}
               />
             </div>
-            <div className="flex w-full flex-col gap-1.5">
+            <div className="flex grow flex-col gap-1.5">
               <Label htmlFor="initial-nw">Monthly Goal (EUR)</Label>
               <Input
                 type="text"
@@ -144,7 +147,7 @@ export default function Home() {
                 }}
               />
             </div>
-            <div className="flex w-full flex-col gap-1.5">
+            <div className="flex grow flex-col gap-1.5">
               <Label htmlFor="initial-nw">SWR (%)</Label>
               <Input
                 type="text"
@@ -165,7 +168,7 @@ export default function Home() {
           </div>
         </div>
         <div className="relative border border-background bg-background rounded-xl">
-          <div className="flex gap-3 items-center scrollbar-hide overflow-x-scroll px-6 py-5">
+          <div className="flex flex-col sm:flex-row sm:flex-nowrap gap-3 items-center scrollbar-hide h-[20rem] sm:h-auto overflow-y-scroll sm:overflow-x-scroll px-6 py-5">
             {phases.map((phase, i) => (
               <PhaseCard
                 key={i}
@@ -175,6 +178,7 @@ export default function Home() {
                   handlePhaseChange(i, updatedPhase)
                 }
                 onDelete={() => handlePhaseDelete(i)}
+                index={i}
               />
             ))}
 
@@ -186,8 +190,8 @@ export default function Home() {
               <PlusCircle className="bg-white stroke-background w-12 h-12 p-0.5 rounded-full" />
             </button>
           </div>
-          <div className="absolute left-0 top-0 rounded-xl h-full w-16 bg-gradient-to-r from-background to-transparent" />
-          <div className="absolute right-0 top-0 rounded-xl h-full w-16 bg-gradient-to-l from-background to-transparent" />
+          <div className="absolute pointer-events-none sm:left-0 top-0 h-8 w-full rounded-xl sm:h-full sm:w-16 sm:bg-gradient-to-r bg-gradient-to-b from-background to-transparent" />
+          <div className="absolute pointer-events-none sm:right-0 sm:top-0 bottom-0 w-full h-8 rounded-xl sm:h-full sm:w-16 sm:bg-gradient-to-l bg-gradient-to-t from-background to-transparent" />
         </div>
         <Button
           className="px-6 py-3 rounded-xl bg-green-700 hover:bg-green-800 text-white"
