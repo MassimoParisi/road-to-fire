@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Snapshot, fire } from "@/lib/fire";
+import { LayoutGroup, motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import Balancer from "react-wrap-balancer";
@@ -18,7 +19,9 @@ import Balancer from "react-wrap-balancer";
 export default function Home() {
   const [initialValue, setInitialValue] = useState("0");
   const [interest, setInterest] = useState("4.5");
-  const [phases, setPhases] = useState<Phase[]>([{ amount: 500, years: 30 }]);
+  const [phases, setPhases] = useState<Phase[]>([
+    { id: crypto.randomUUID(), amount: 500, years: 30 },
+  ]);
   const [ter, setTer] = useState("0.22");
   const [monthlyGoal, setMonthlyGoal] = useState("1500");
   const [swr, setSwr] = useState("3");
@@ -171,7 +174,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row sm:flex-nowrap gap-3 items-center scrollbar-hide h-[20rem] sm:h-auto overflow-y-scroll sm:overflow-x-scroll px-6 py-5">
             {phases.map((phase, i) => (
               <PhaseCard
-                key={i}
+                key={phase.id}
                 {...phase}
                 onlyOne={phases.length == 1}
                 onChange={(updatedPhase: Phase) =>
@@ -182,13 +185,19 @@ export default function Home() {
               />
             ))}
 
-            <button
+            <motion.button
+              layout
               onClick={() => {
-                setPhases([...phases, { amount: 500, years: 10 }]);
+                const newPhase = {
+                  id: crypto.randomUUID(),
+                  amount: 500,
+                  years: 10,
+                };
+                setPhases([...phases, newPhase]);
               }}
             >
               <PlusCircle className="bg-white stroke-background w-12 h-12 p-0.5 rounded-full" />
-            </button>
+            </motion.button>
           </div>
           <div className="absolute pointer-events-none sm:left-0 top-0 h-8 w-full rounded-xl sm:h-full sm:w-16 sm:bg-gradient-to-r bg-gradient-to-b from-background to-transparent" />
           <div className="absolute pointer-events-none sm:right-0 sm:top-0 bottom-0 w-full h-8 rounded-xl sm:h-full sm:w-16 sm:bg-gradient-to-l bg-gradient-to-t from-background to-transparent" />
