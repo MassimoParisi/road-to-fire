@@ -227,6 +227,11 @@ export default function Home() {
           Submit
         </Button>
       </div>
+      <div className="flex flex-wrap gap-3 px-10 justify-center w-full">
+        <PrincipalCard principal={finalPrincipal} />
+        <NetWorthCard netWorth={finalNetWorth} fuRatio={finalFuRatio} />
+        <FuckYouRatioCard fuRatio={finalFuRatio} />
+      </div>
       {data.length > 0 ? (
         <Tabs defaultValue="visual" className="w-full">
           <TabsList className="w-min flex gap-2 rounded-xl">
@@ -239,11 +244,11 @@ export default function Home() {
           </TabsList>
           <TabsContent value="visual">
             <div className="flex flex-col gap-3 pt-10">
-              <div className="flex flex-wrap gap-3 px-10 justify-center">
+              {/* <div className="flex flex-wrap gap-3 px-10 justify-center">
                 <PrincipalCard principal={finalPrincipal} />
                 <NetWorthCard netWorth={finalNetWorth} fuRatio={finalFuRatio} />
                 <FuckYouRatioCard fuRatio={finalFuRatio} />
-              </div>
+              </div> */}
               <SavingsChart snapshots={data} fuMoney={fuMoney} />
             </div>
           </TabsContent>
